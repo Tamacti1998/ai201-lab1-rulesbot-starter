@@ -116,23 +116,13 @@ handle these cases better, at the cost of more implementation complexity.
 **Actual chunk count produced across all 8 rule books:**
 
 ```
-| Rule Book | Number of Chunks |
-| --------- | ---------------: |
-| Book 1    |              120 |
-| Book 2    |               95 |
-| Book 3    |              110 |
-| Book 4    |               88 |
-| Book 5    |              130 |
-| Book 6    |              102 |
-| Book 7    |               99 |
-| Book 8    |              106 |
-| **Total** |   **850 chunks** |
+149 chunks
 [your answer here]
 ```
 
 **One thing that surprised you or didn't match your expectations:**
 
 ```
-I was surprised by how much overlap increased the number of chunks. I expected each section of text to appear only once, but because the sliding window reuses some text from previous chunks, the total number of chunks was larger than expected.
+Overlap doesn't increase chunk count as much as you'd think — the 50-character overlap just duplicates content; it doesn't create new chunks, so 149 is about what the math predicts: total_characters / 250
 [your answer here]
 ```
