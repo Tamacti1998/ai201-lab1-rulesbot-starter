@@ -89,8 +89,11 @@ IMPORTANT: Start your response with [{primary_game}] before the answer. Example 
     response_text = response.choices[0].message.content
     
     # If the model invoked the "I don't have that information" fallback,
-    # don't prepend a game tag — it's a meta-response, not a rule citation.
+    # strip the game tag prefix since it's a meta-response, not a rule citation.
     if "I don't have that information in the loaded rulebooks" in response_text:
+        # Remove [GAME] prefix if present
+        if response_text.startswith("["):
+            response_text = response_text[response_text.find("]") + 1:].strip()
         return response_text
     
     return response_text
