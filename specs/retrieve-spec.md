@@ -55,7 +55,14 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 *Sketch out what one item in your return list looks like as a concrete example. Where does each field come from in the query results?*
 
 ```
-[your answer here]
+[{
+    "text": "When you roll a 7, you must move the robber to any hex on the board. All players with more than 7 cards discard half their hand (rounded down). Then the player who rolled chooses one adjacent player and steals one card at random from them.",
+    "game": "Catan",
+    "distance": 0.187
+}, 
+"text" ← results["documents"][0][i] — the raw chunk text
+"game" ← results["metadatas"][0][i]["game"] — extracted from the metadata dict stored during ingestion
+"distance" ← results["distances"][0][i] — the cosine distance score (lower = more similar)]
 ```
 
 ---
@@ -65,7 +72,8 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 *`_collection.query()` returns nested lists. Describe what index you need to access to get the actual list of results for a single query, and why the nesting exists.*
 
 ```
-[your answer here]
+[Since we are only passing one query (query_texts=[query]), you always use [0] to extract results for that single query, 
+ChromaDB's query() method accepts multiples queries at once for batch efficiencey. The response structure accomodates all queries. ]
 ```
 
 ---
@@ -75,7 +83,12 @@ Results should be ordered from most to least relevant (lowest to highest distanc
 *Will you filter out results above a certain distance score, or return all `n_results` regardless of how relevant they are? What are the tradeoffs of each approach?*
 
 ```
-[your answer here]
+[I'd recommend: Return all n_results unconditionally, but include the distance scores for the LLM to interpret.,
+Tradeoffs:
+Approach	Pros	Cons
+Filter by threshold (e.g., distance < 0.5)	✓ Prevents hallucination from weak matches<br>✓ No junk context confusing the LLM<br>✓ Honest signal of low confidence	✗ Hard to pick the right threshold<br>✗ Risk of 0 results (bad UX)<br>✗ With only 3 results, you can't afford to drop any
+Return all n_results	✓ Always gives the LLM something to work with<br>✓ No threshold tuning needed<br>✓ LLM can weigh weak signals itself	✗ Noisy context could mislead the LLM<br>✗ No safety rail against poor matches                                       |
+]
 ```
 
 ---
