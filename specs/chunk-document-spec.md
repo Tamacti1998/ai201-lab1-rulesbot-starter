@@ -116,13 +116,11 @@ handle these cases better, at the cost of more implementation complexity.
 **Actual chunk count produced across all 8 rule books:**
 
 ```
-149 chunks
-[your answer here]
+[149 chunks]
 ```
 
 **One thing that surprised you or didn't match your expectations:**
 
 ```
-Overlap doesn't increase chunk count as much as you'd think — the 50-character overlap just duplicates content; it doesn't create new chunks, so 149 is about what the math predicts: total_characters / 250
-[your answer here]
+[Overlap doesn't increase chunk count as much as you'd think — the 50-character overlap just duplicates content; it doesn't create new chunks, so 149 is about what the math predicts: total_characters / 250]
 ```
