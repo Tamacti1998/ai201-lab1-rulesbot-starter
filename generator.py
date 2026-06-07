@@ -62,13 +62,19 @@ EXAMPLES OF WHAT NOT TO DO:
 - ❌ "Unlike other games..." (comparative reasoning)"""
 
     # User message — context + query
+    # Identify the primary game from the first chunk
+    primary_game = retrieved_chunks[0]["game"] if retrieved_chunks else "Unknown"
+    
     user_message = f"""Here are the retrieved rule sections:
 
 {context}
 
 ---
 
-Answer this question using ONLY the rules above: {query}"""
+Answer this question using ONLY the rules above: {query}
+
+IMPORTANT: Start your response with [{primary_game}] before the answer. Example format:
+[{primary_game}] Your answer text here."""
 
     # Call the LLM
     response = _client.chat.completions.create(
