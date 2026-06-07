@@ -86,4 +86,11 @@ IMPORTANT: Start your response with [{primary_game}] before the answer. Example 
         temperature=0.2,  # Low temperature for factual grounding
     )
 
-    return response.choices[0].message.content
+    response_text = response.choices[0].message.content
+    
+    # If the model invoked the "I don't have that information" fallback,
+    # don't prepend a game tag — it's a meta-response, not a rule citation.
+    if "I don't have that information in the loaded rulebooks" in response_text:
+        return response_text
+    
+    return response_text

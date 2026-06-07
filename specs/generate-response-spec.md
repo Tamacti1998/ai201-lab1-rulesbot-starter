@@ -124,7 +124,7 @@ EXAMPLES OF WHAT NOT TO DO:
 **Test query and response:**
 
 ```
-Query: [your test query]
+Query: []
 Response: [abbreviated response]
 Correctly grounded? [yes / no]
 Cited the right game? [yes / no]
