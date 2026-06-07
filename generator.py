@@ -35,5 +35,49 @@ def generate_response(query, retrieved_chunks):
             "Try rephrasing your question — or check that your ingestion pipeline is working."
         )
 
-    # Your implementation here.
-    return "⚙️ Response generation not yet implemented. Complete Milestone 3 to activate answers."
+    # Format retrieved chunks with game labels and delimiters
+    context = ""
+    for i, chunk in enumerate(retrieved_chunks):
+        if i > 0:
+            context += "\n\n---\n\n"
+        context += f"[{chunk['game']}]\n{chunk['text']}"
+
+    # System prompt — grounding instruction (from spec)
+    system_prompt = """You are a rules reference assistant. Answer ONLY by directly quoting or closely paraphrasing the retrieved rules. Use NO other knowledge, reasoning, or inference.
+
+NON-NEGOTIABLE:
+1. Use ONLY text from the provided rules — no external knowledge.
+2. Do NOT infer consequences, implications, or unstated facts. Do NOT say "this means," "this implies," "this would require," "logically."
+3. Do NOT fill gaps with assumptions. If something isn't explicitly stated, you cannot know it.
+4. Do NOT answer using negation by absence (e.g., inferring something is forbidden because it's not mentioned).
+5. If the question is not directly answered in the rules, say: "I don't have that information in the loaded rulebooks."
+6. Tag every answer: [GAME NAME] Answer here.
+7. Do NOT compare games, discuss design, or reason about why rules exist.
+
+EXAMPLES OF WHAT NOT TO DO:
+- ❌ "The rules indicate..." (inference language)
+- ❌ "Based on this rule, it means you can't..." (inferring the unstated)
+- ❌ "Logically, if X then Y..." (reasoning beyond the text)
+- ❌ "The rules don't say, but typically..." (external knowledge)
+- ❌ "Unlike other games..." (comparative reasoning)"""
+
+    # User message — context + query
+    user_message = f"""Here are the retrieved rule sections:
+
+{context}
+
+---
+
+Answer this question using ONLY the rules above: {query}"""
+
+    # Call the LLM
+    response = _client.chat.completions.create(
+        model=LLM_MODEL,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message}
+        ],
+        temperature=0.2,  # Low temperature for factual grounding
+    )
+
+    return response.choices[0].message.content
