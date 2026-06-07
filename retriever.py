@@ -68,5 +68,23 @@ def retrieve(query, n_results=N_RESULTS):
     if _collection.count() == 0:
         return []
 
-    # Your implementation here.
-    return []
+    results = _collection.query(
+        query_texts=[query],
+        n_results=n_results,
+        include=["documents", "metadatas", "distances"]
+    )
+
+    # Extract results for the single query using [0]
+    documents = results["documents"][0]
+    metadatas = results["metadatas"][0]
+    distances = results["distances"][0]
+
+    # Build return list with the required fields
+    return [
+        {
+            "text": documents[i],
+            "game": metadatas[i]["game"],
+            "distance": distances[i]
+        }
+        for i in range(len(documents))
+    ]
