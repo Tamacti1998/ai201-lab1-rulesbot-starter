@@ -110,14 +110,14 @@ Return all n_results	✓ Always gives the LLM something to work with<br>✓ No t
 **Test query and top result returned:**
 
 ```
-Query: [your test query]
-Top result game: [game name]
-Distance score: [score]
-Does it make sense? [yes / no / explain]
+Query: [How do you get out of Jail?]
+Top result game: [Monopoly]
+Distance score: [0.282]
+Does it make sense? [Yes, it makes sense. The query "How do you get out of Jail?" semantically aligns with the Monopoly Jail rule chunk. While "Jail" is a key matching term, the embeddings capture the broader context—the question asks about a game mechanic, and the Monopoly chunk explains exactly that mechanic. A distance of 0.282 indicates good relevance, though not a perfect match (which would be closer to 0.0).]
 ```
 
 **One thing about the query results that surprised you:**
 
 ```
-[your answer here]
+[What surprises me is that my initial thought was about keyword matching like in the case of the query. In which both the query and the chunk have the same keyword "Jail." But it seems like that's not the only case, the embeddings rather capture a bigger picture or context about the query and relate it to the chunks, and that's what surprises me.]
 ```
