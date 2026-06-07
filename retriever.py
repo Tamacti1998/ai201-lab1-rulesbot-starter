@@ -80,7 +80,7 @@ def retrieve(query, n_results=N_RESULTS):
     distances = results["distances"][0]
 
     # Build return list with the required fields
-    return [
+    chunks = [
         {
             "text": documents[i],
             "game": metadatas[i]["game"],
@@ -88,3 +88,9 @@ def retrieve(query, n_results=N_RESULTS):
         }
         for i in range(len(documents))
     ]
+
+    # TODO: Remove after testing
+    for chunk in chunks:
+        print(f"[{chunk['game']}] (dist: {chunk['distance']:.3f}) {chunk['text'][:80]}...")
+
+    return chunks
